@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { useMemo, useState } from "react";
-import { ArrowRight, Flame, GitPullRequest, Sparkles } from "lucide-react";
+import { ArrowRight, Boxes, FolderKanban, Newspaper } from "lucide-react";
 import { Link } from "react-router-dom";
 
 import { ModelCard } from "@/components/model-card";
@@ -20,26 +20,47 @@ import {
 } from "@/data/sources";
 import {
   archiveBuckets,
+  bucketLabels,
   getTopPhrases,
-  homeTicker,
   models,
   type PhraseBucket,
   phrases,
   rankingMeta,
-  scoreMethodology,
   sortPhrases,
 } from "@/data/site";
 import { cn } from "@/lib/cn";
 
 type SortMode = "trending" | "latest";
 
+const homeSections = [
+  { id: "hot", label: "Hot" },
+  { id: "latest", label: "Latest" },
+  { id: "sources", label: "Sources" },
+  { id: "archive", label: "Archive" },
+  { id: "rankings", label: "Rankings" },
+  { id: "models", label: "Models" },
+];
+
 export function HomePage() {
   const [sortMode, setSortMode] = useState<SortMode>("trending");
   const [selectedModel, setSelectedModel] = useState<string>("all");
   const [selectedBucket, setSelectedBucket] = useState<PhraseBucket | "all">("all");
 
+  const hotPhrases = useMemo(() => sortPhrases("trending").slice(0, 5), []);
+  const latestPhrases = useMemo(() => sortPhrases("latest").slice(0, 5), []);
+  const bucketCards = useMemo(() => {
+    const trending = sortPhrases("trending");
+
+    return archiveBuckets.map((bucket) => ({
+      ...bucket,
+      count: phrases.filter((phrase) => phrase.bucket === bucket.key).length,
+      sample: trending.find((phrase) => phrase.bucket === bucket.key),
+    }));
+  }, []);
+
   const visiblePhrases = useMemo(() => {
     const sorted = sortPhrases(sortMode);
+
     return sorted.filter((phrase) => {
       const matchesModel =
         selectedModel === "all" || phrase.model.slug === selectedModel;
@@ -50,150 +71,174 @@ export function HomePage() {
     });
   }, [selectedBucket, selectedModel, sortMode]);
 
+  const sourceCount = featuredTweetSources.length + supportingTweetSources.length;
+  const hasCustomView =
+    sortMode !== "trending" ||
+    selectedModel !== "all" ||
+    selectedBucket !== "all";
+
+  const scrollToSection = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
+  const resetView = () => {
+    setSortMode("trending");
+    setSelectedModel("all");
+    setSelectedBucket("all");
+  };
+
   return (
-    <div className="page-grid gap-16 pb-8">
-      <section className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
-        <Card className="noise-border overflow-hidden p-7 sm:p-10">
-          <div className="flex flex-wrap gap-2">
-            {homeTicker.map((item) => (
-              <Badge key={item}>{item}</Badge>
+    <div className="page-grid gap-14 pb-8">
+      <section className="grid gap-6 xl:grid-cols-[1.16fr_0.84fr]">
+        <Card
+          className="noise-border overflow-hidden p-7 sm:p-8"
+          id="hot"
+        >
+          <div className="flex flex-wrap items-center gap-2">
+            <Badge>Archive index</Badge>
+            <p className="text-xs uppercase tracking-[0.18em] text-[color:var(--muted)]">
+              hot phrases, latest drops, rankings, model pages, source threads
+            </p>
+          </div>
+
+          <h1 className="mt-6 max-w-4xl font-[var(--font-display)] text-4xl font-bold tracking-tight text-[color:var(--ink)] sm:text-5xl lg:text-6xl">
+            Hot phrases first.
+          </h1>
+
+          <p className="mt-4 max-w-3xl text-base leading-7 text-[color:var(--muted)] sm:text-lg sm:leading-8">
+            Browse the phrases AI models keep repeating, see the newest additions,
+            compare model habits, and trace entries back to the posts that noticed
+            them first.
+          </p>
+
+          <div className="mt-6 flex flex-wrap gap-2">
+            {homeSections.map((section) => (
+              <button
+                key={section.id}
+                className="rounded-full border border-[color:var(--line)] bg-white/70 px-4 py-2 text-sm font-medium text-[color:var(--ink)] transition hover:-translate-y-0.5 hover:bg-white"
+                onClick={() => scrollToSection(section.id)}
+                type="button"
+              >
+                {section.label}
+              </button>
             ))}
           </div>
 
-          <h1 className="mt-6 max-w-4xl font-[var(--font-display)] text-5xl font-bold tracking-tight text-[color:var(--ink)] sm:text-6xl lg:text-7xl">
-            A community archive for the things AI models keep saying.
-          </h1>
+          <div className="mt-8 grid gap-3 sm:grid-cols-2">
+            {hotPhrases.map((phrase, index) => (
+              <Link
+                key={phrase.slug}
+                className="group rounded-[24px] border border-[color:var(--line)] bg-black/[0.03] p-5 transition hover:-translate-y-0.5 hover:bg-black/[0.05]"
+                to={`/phrases/${phrase.slug}`}
+              >
+                <p className="text-xs uppercase tracking-[0.18em] text-[color:var(--muted)]">
+                  #{index + 1} trending
+                </p>
 
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-[color:var(--muted)]">
-            AISaidThat documents overused AI phrases, signature wording patterns,
-            and the strange little habits that make model output instantly recognizable.
-          </p>
+                <h2 className="mt-3 font-[var(--font-display)] text-2xl font-bold tracking-tight text-[color:var(--ink)]">
+                  “{phrase.phrase}”
+                </h2>
 
-          <p className="mt-4 max-w-2xl text-sm leading-7 text-[color:var(--muted)]">
-            This first archive drop is seeded from recurring AI output patterns and
-            X user observations gathered across 2025-2026 discussions.
-          </p>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <Badge className={phrase.model.theme.chip}>
+                    {phrase.model.name}
+                  </Badge>
+                  <Badge>{bucketLabels[phrase.bucket]}</Badge>
+                </div>
 
-          <div className="mt-8 flex flex-wrap gap-3">
-            <a className={buttonVariants({ size: "lg" })} href="#archive">
-              Explore the archive
-            </a>
-            <Link
-              className={buttonVariants({ variant: "secondary", size: "lg" })}
-              to="/contribute"
-            >
-              How submissions work
-            </Link>
-          </div>
-
-          <div className="mt-10 grid gap-4 md:grid-cols-3">
-            <StatTile
-              value={`${phrases.length}`}
-              label="phrases archived"
-              icon={<Flame className="h-5 w-5" />}
-            />
-            <StatTile
-              value={`${models.length}`}
-              label="model voices tracked"
-              icon={<Sparkles className="h-5 w-5" />}
-            />
-            <StatTile
-              value="GitHub PR"
-              label="community contribution flow"
-              icon={<GitPullRequest className="h-5 w-5" />}
-            />
+                <div className="mt-5 flex items-center justify-between text-sm font-medium text-[color:var(--ink)]">
+                  <span>Read the entry</span>
+                  <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
+                </div>
+              </Link>
+            ))}
           </div>
         </Card>
 
         <div className="grid gap-6">
-          <Card className="noise-border overflow-hidden p-7">
-            <Badge className="mb-4">Core idea</Badge>
-            <h2 className="font-[var(--font-display)] text-3xl font-bold tracking-tight">
-              AI does not just answer. It develops habits.
-            </h2>
-            <p className="mt-4 text-sm leading-7 text-[color:var(--muted)]">
-              Phrase patterns, style bias, repeated softeners, roadmap language,
-              fake certainty, polite disclaimers. Once you see them, you start hearing
-              the same rhythms everywhere.
-            </p>
-            <div className="mt-6 rounded-[26px] border border-[color:var(--line)] bg-black/[0.03] p-5">
-              <p className="font-[var(--font-mono)] text-xs uppercase tracking-[0.16em] text-[color:var(--muted)]">
-                Positioning
+          <Card className="noise-border p-7" id="latest">
+            <div className="flex items-center justify-between gap-3">
+              <Badge>Latest additions</Badge>
+              <p className="text-xs uppercase tracking-[0.18em] text-[color:var(--muted)]">
+                most recent archive drops
               </p>
-              <p className="mt-3 text-lg leading-8 text-[color:var(--ink)]">
-                Not a tutorial site. Not technical docs. An AI language culture archive.
-              </p>
+            </div>
+
+            <div className="mt-4 space-y-3">
+              {latestPhrases.map((phrase) => (
+                <Link
+                  key={phrase.slug}
+                  className="block rounded-[22px] border border-[color:var(--line)] bg-black/[0.03] px-4 py-4 transition hover:bg-black/[0.05]"
+                  to={`/phrases/${phrase.slug}`}
+                >
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <div className="font-medium text-[color:var(--ink)]">
+                        “{phrase.phrase}”
+                      </div>
+                      <div className="mt-1 text-sm text-[color:var(--muted)]">
+                        {phrase.model.name}
+                      </div>
+                    </div>
+                    <div className="text-xs uppercase tracking-[0.18em] text-[color:var(--muted)]">
+                      {formatDate(phrase.createdAt)}
+                    </div>
+                  </div>
+                </Link>
+              ))}
             </div>
           </Card>
 
           <Card className="noise-border p-7">
-            <Badge className="mb-4">Why it works</Badge>
-            <div className="space-y-4 text-sm leading-7 text-[color:var(--muted)]">
-              <p>High-recognition content that almost every heavy AI user has seen.</p>
-              <p>Strong meme energy that naturally turns into screenshots and shares.</p>
-              <p>Open contribution workflow so the archive can evolve with new model habits.</p>
+            <div className="flex items-center justify-between gap-3">
+              <Badge>Archive snapshot</Badge>
+              <Link
+                className="text-sm font-medium text-[color:var(--ink)] transition hover:text-[color:var(--muted)]"
+                to="/contribute"
+              >
+                Contribute
+              </Link>
             </div>
+
+            <div className="mt-5 grid gap-3">
+              <MetricTile
+                icon={<Boxes className="h-5 w-5" />}
+                label="phrases archived"
+                value={`${phrases.length}`}
+              />
+              <MetricTile
+                icon={<FolderKanban className="h-5 w-5" />}
+                label="model archives"
+                value={`${models.length}`}
+              />
+              <MetricTile
+                icon={<Newspaper className="h-5 w-5" />}
+                label="source threads"
+                value={`${sourceCount}`}
+              />
+            </div>
+
+            <Link
+              className={buttonVariants({
+                variant: "secondary",
+                className: "mt-5 w-full justify-center",
+              })}
+              to="/contribute"
+            >
+              Open contribution guide
+            </Link>
           </Card>
         </div>
       </section>
 
-      <section className="page-grid">
+      <section className="page-grid" id="sources">
         <SectionHeading
-          eyebrow="Taxonomy"
-          title="The archive starts with three buckets people keep noticing."
-          description="Your X research maps cleanly to three recurring content types: model personas, rhetorical patterns, and stock response templates."
-        />
-
-        <div className="grid gap-6 xl:grid-cols-3">
-          {archiveBuckets.map((bucket) => {
-            const samples = sortPhrases("trending")
-              .filter((phrase) => phrase.bucket === bucket.key)
-              .slice(0, 2);
-
-            return (
-              <Card key={bucket.key} className="noise-border p-6">
-                <Badge className="mb-4">{bucket.shortLabel}</Badge>
-                <h3 className="font-[var(--font-display)] text-2xl font-bold tracking-tight">
-                  {bucket.title}
-                </h3>
-                <p className="mt-3 text-sm leading-6 text-[color:var(--muted)]">
-                  {bucket.description}
-                </p>
-                <div className="mt-6 flex items-end justify-between">
-                  <div>
-                    <div className="font-[var(--font-display)] text-4xl font-bold tracking-tight">
-                      {phrases.filter((phrase) => phrase.bucket === bucket.key).length}
-                    </div>
-                    <div className="text-sm text-[color:var(--muted)]">seed entries</div>
-                  </div>
-                </div>
-                <div className="mt-6 space-y-3">
-                  {samples.map((phrase) => (
-                    <Link
-                      key={phrase.slug}
-                      className="block rounded-[22px] border border-[color:var(--line)] bg-black/[0.03] px-4 py-4 text-sm transition hover:bg-black/[0.05]"
-                      to={`/phrases/${phrase.slug}`}
-                    >
-                      <div className="font-medium text-[color:var(--ink)]">
-                        "{phrase.phrase}"
-                      </div>
-                      <div className="mt-1 text-[color:var(--muted)]">
-                        {phrase.model.name}
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              </Card>
-            );
-          })}
-        </div>
-      </section>
-
-      <section className="page-grid">
-        <SectionHeading
-          eyebrow="X source threads"
-          title="Real user observations, attached to the archive."
-          description="The site is seeded with recurring phrases, but it should also show the live threads where people notice the pattern in public."
+          eyebrow="Source threads"
+          title="See the posts that made these phrases recognizable."
+          description="Public comparison threads, screenshots, and user field notes that feed the archive."
         />
 
         <div className="grid gap-6 xl:grid-cols-2">
@@ -209,81 +254,156 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="page-grid">
+      <section className="page-grid" id="archive">
         <SectionHeading
-          eyebrow="Models"
-          title="Different models, different verbal tics."
-          description="ChatGPT sounds like it wants to ship. Claude sounds like it wants to qualify the claim. Gemini sounds like it wants to turn the answer into a roadmap."
+          eyebrow="Archive"
+          title="Filter by model, category, and freshness."
+          description="Use the category cards as shortcuts, then narrow the full list by model and by trending or latest."
         />
 
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {models.map((model) => (
-            <ModelCard
-              key={model.slug}
-              model={model}
-              phraseCount={phrases.filter((phrase) => phrase.model.slug === model.slug).length}
-            />
-          ))}
-        </div>
-      </section>
+        <div className="grid gap-4 xl:grid-cols-3">
+          {bucketCards.map((bucket) => {
+            const active = selectedBucket === bucket.key;
 
-      <section id="archive" className="page-grid">
-        <SectionHeading
-          eyebrow="Phrase archive"
-          title="Browse the lines that keep showing up."
-          description="Sort by what is hottest, switch to the latest additions, or narrow the archive down to one model voice."
-        />
-
-        <div className="flex flex-col gap-4 rounded-[30px] border border-[color:var(--line)] bg-white/60 p-4 backdrop-blur sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex flex-wrap gap-2">
-            {(["trending", "latest"] as const).map((mode) => (
+            return (
               <button
-                key={mode}
-                className={cn(
-                  "rounded-full px-4 py-2 text-sm font-medium transition",
-                  sortMode === mode
-                    ? "bg-[var(--ink)] text-white"
-                    : "bg-white/70 text-[color:var(--muted)] hover:text-[color:var(--ink)]",
-                )}
-                onClick={() => setSortMode(mode)}
+                key={bucket.key}
+                className="group text-left"
+                onClick={() =>
+                  setSelectedBucket(active ? "all" : bucket.key)
+                }
+                type="button"
               >
-                {mode === "trending" ? "Trending" : "Latest"}
+                <Card
+                  className={cn(
+                    "noise-border h-full p-6 transition duration-200 group-hover:-translate-y-0.5",
+                    active && "border-[color:var(--ink)] bg-white",
+                  )}
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <Badge
+                      className={cn(
+                        active && "bg-[var(--ink)] text-white",
+                      )}
+                    >
+                      {bucket.shortLabel}
+                    </Badge>
+
+                    <div className="text-right">
+                      <div className="font-[var(--font-display)] text-3xl font-bold tracking-tight text-[color:var(--ink)]">
+                        {bucket.count}
+                      </div>
+                      <div className="text-xs uppercase tracking-[0.16em] text-[color:var(--muted)]">
+                        entries
+                      </div>
+                    </div>
+                  </div>
+
+                  <h3 className="mt-4 font-[var(--font-display)] text-2xl font-bold tracking-tight text-[color:var(--ink)]">
+                    {bucket.title}
+                  </h3>
+
+                  <p className="mt-3 text-sm leading-6 text-[color:var(--muted)]">
+                    {bucket.description}
+                  </p>
+
+                  {bucket.sample ? (
+                    <div className="mt-5 rounded-[24px] border border-[color:var(--line)] bg-black/[0.03] p-4">
+                      <p className="text-xs uppercase tracking-[0.16em] text-[color:var(--muted)]">
+                        Top sample
+                      </p>
+                      <p className="mt-2 text-sm leading-6 text-[color:var(--ink)]">
+                        “{bucket.sample.phrase}”
+                      </p>
+                    </div>
+                  ) : null}
+                </Card>
               </button>
-            ))}
-          </div>
+            );
+          })}
         </div>
 
-        <div className="flex flex-col gap-4 rounded-[30px] border border-[color:var(--line)] bg-white/60 p-4 backdrop-blur">
-          <div className="flex flex-wrap gap-2">
-            <FilterPill
-              active={selectedModel === "all"}
-              label="All models"
-              onClick={() => setSelectedModel("all")}
-            />
-            {models.map((model) => (
-              <FilterPill
-                key={model.slug}
-                active={selectedModel === model.slug}
-                label={model.name}
-                onClick={() => setSelectedModel(model.slug)}
-              />
-            ))}
+        <div className="flex flex-col gap-5 rounded-[30px] border border-[color:var(--line)] bg-white/60 p-4 backdrop-blur sm:p-5">
+          <div className="flex flex-col gap-4 xl:flex-row xl:items-center xl:justify-between">
+            <div>
+              <p className="text-xs uppercase tracking-[0.18em] text-[color:var(--muted)]">
+                Sort archive
+              </p>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {(["trending", "latest"] as const).map((mode) => (
+                  <button
+                    key={mode}
+                    className={cn(
+                      "rounded-full px-4 py-2 text-sm font-medium transition",
+                      sortMode === mode
+                        ? "bg-[var(--ink)] text-white"
+                        : "bg-white/70 text-[color:var(--muted)] hover:text-[color:var(--ink)]",
+                    )}
+                    onClick={() => setSortMode(mode)}
+                    type="button"
+                  >
+                    {mode === "trending" ? "Trending" : "Latest"}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="rounded-full border border-[color:var(--line)] bg-white/70 px-4 py-2 text-sm text-[color:var(--muted)]">
+                {visiblePhrases.length} entries showing
+              </div>
+              {hasCustomView ? (
+                <button
+                  className={buttonVariants({ variant: "ghost", size: "md" })}
+                  onClick={resetView}
+                  type="button"
+                >
+                  Reset view
+                </button>
+              ) : null}
+            </div>
           </div>
 
-          <div className="flex flex-wrap gap-2">
-            <FilterPill
-              active={selectedBucket === "all"}
-              label="All categories"
-              onClick={() => setSelectedBucket("all")}
-            />
-            {archiveBuckets.map((bucket) => (
+          <div>
+            <p className="text-xs uppercase tracking-[0.18em] text-[color:var(--muted)]">
+              Filter by model
+            </p>
+            <div className="mt-2 flex flex-wrap gap-2">
               <FilterPill
-                key={bucket.key}
-                active={selectedBucket === bucket.key}
-                label={bucket.shortLabel}
-                onClick={() => setSelectedBucket(bucket.key)}
+                active={selectedModel === "all"}
+                label="All models"
+                onClick={() => setSelectedModel("all")}
               />
-            ))}
+              {models.map((model) => (
+                <FilterPill
+                  key={model.slug}
+                  active={selectedModel === model.slug}
+                  label={model.name}
+                  onClick={() => setSelectedModel(model.slug)}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div>
+            <p className="text-xs uppercase tracking-[0.18em] text-[color:var(--muted)]">
+              Filter by category
+            </p>
+            <div className="mt-2 flex flex-wrap gap-2">
+              <FilterPill
+                active={selectedBucket === "all"}
+                label="All categories"
+                onClick={() => setSelectedBucket("all")}
+              />
+              {archiveBuckets.map((bucket) => (
+                <FilterPill
+                  key={bucket.key}
+                  active={selectedBucket === bucket.key}
+                  label={bucket.shortLabel}
+                  onClick={() => setSelectedBucket(bucket.key)}
+                />
+              ))}
+            </div>
           </div>
         </div>
 
@@ -294,29 +414,33 @@ export function HomePage() {
             ))}
           </div>
         ) : (
-          <Card className="p-8">
-            <h3 className="font-[var(--font-display)] text-2xl font-bold tracking-tight">
-              No entries match this filter yet.
+          <Card className="noise-border p-8">
+            <h3 className="font-[var(--font-display)] text-2xl font-bold tracking-tight text-[color:var(--ink)]">
+              No entries match this view yet.
             </h3>
             <p className="mt-3 text-sm leading-6 text-[color:var(--muted)]">
-              Try switching the model or category filter, or add the missing phrase as a contribution.
+              Try a different model or category, or reset the archive filters.
             </p>
+            <button
+              className={buttonVariants({
+                variant: "secondary",
+                className: "mt-5",
+              })}
+              onClick={resetView}
+              type="button"
+            >
+              Reset archive view
+            </button>
           </Card>
         )}
       </section>
 
-      <section className="page-grid">
+      <section className="page-grid" id="rankings">
         <SectionHeading
           eyebrow="Rankings"
-          title="Three ways to judge an AI catchphrase."
-          description="For the launch version, these rankings are editorial seed data used for curation and browsing, not live vote counts."
+          title="See the archive through different leaderboards."
+          description="The same phrases surface differently when you sort by overuse, humor, or how synthetic they sound."
         />
-
-        <Card className="p-5">
-          <p className="text-sm leading-6 text-[color:var(--muted)]">
-            {scoreMethodology}
-          </p>
-        </Card>
 
         <div className="grid gap-6 xl:grid-cols-3">
           {rankingMeta.map((entry) => (
@@ -331,57 +455,41 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="grid gap-6 lg:grid-cols-[0.95fr_1.05fr]">
-        <Card className="noise-border overflow-hidden p-7 sm:p-8">
-          <Badge className="mb-4">Community workflow</Badge>
-          <h2 className="font-[var(--font-display)] text-3xl font-bold tracking-tight">
-            Contribute by pull request.
-          </h2>
-          <p className="mt-4 text-sm leading-7 text-[color:var(--muted)]">
-            The archive is designed to be open, transparent, and traceable. Add a phrase,
-            commit structured data, open a PR, pass validation, and let the site update.
-          </p>
+      <section className="page-grid" id="models">
+        <SectionHeading
+          eyebrow="Models"
+          title="Open the archive by model voice."
+          description="Each model page collects the phrases and tendencies that make its output recognizable at a glance."
+        />
 
-          <div className="mt-8 grid gap-3">
-            {[
-              "Submit a phrase in a standard JSON or Markdown shape",
-              "Get a transparent review history through GitHub",
-              "Keep the content grounded in real model output",
-            ].map((step) => (
-              <div
-                key={step}
-                className="rounded-[22px] border border-[color:var(--line)] bg-black/[0.03] px-4 py-4 text-sm text-[color:var(--ink)]"
-              >
-                {step}
-              </div>
-            ))}
-          </div>
-        </Card>
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          {models.map((model) => (
+            <ModelCard
+              key={model.slug}
+              model={model}
+              phraseCount={phrases.filter((phrase) => phrase.model.slug === model.slug).length}
+            />
+          ))}
+        </div>
+      </section>
 
+      <section>
         <Card className="noise-border p-7 sm:p-8">
-          <Badge className="mb-4">Shareability</Badge>
-          <h2 className="font-[var(--font-display)] text-3xl font-bold tracking-tight">
-            Built for recognition, screenshots, and comparison.
-          </h2>
-          <p className="mt-4 text-sm leading-7 text-[color:var(--muted)]">
-            The best entries are fast to read, instantly familiar, and easy to send to someone
-            with the caption: “AI really said that.”
-          </p>
+          <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+            <div className="max-w-3xl">
+              <Badge className="mb-4">Contribute</Badge>
+              <h2 className="font-[var(--font-display)] text-3xl font-bold tracking-tight text-[color:var(--ink)]">
+                Seen a phrase that belongs in the archive?
+              </h2>
+              <p className="mt-4 text-sm leading-7 text-[color:var(--muted)]">
+                Submit it through GitHub, keep the source visible, and help extend
+                the archive with one more recognizable AI line.
+              </p>
+            </div>
 
-          <div className="mt-8 rounded-[28px] border border-[color:var(--line)] bg-[color:var(--ink)] px-6 py-6 text-[color:var(--surface)]">
-            <p className="font-[var(--font-display)] text-2xl font-bold tracking-tight">
-              “A collection of phrases AI can’t stop saying.”
-            </p>
-            <p className="mt-3 text-sm leading-6 text-white/70">
-              That is the product in one sentence.
-            </p>
-
-            <Link
-              className="mt-6 inline-flex items-center gap-2 text-sm font-medium text-white"
-              to="/contribute"
-            >
-              Read the contribution guide
-              <ArrowRight className="h-4 w-4" />
+            <Link className={buttonVariants({ size: "lg" })} to="/contribute">
+              Open contribution guide
+              <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
           </div>
         </Card>
@@ -390,24 +498,26 @@ export function HomePage() {
   );
 }
 
-function StatTile({
+function MetricTile({
+  icon,
   value,
   label,
-  icon,
 }: {
+  icon: ReactNode;
   value: string;
   label: string;
-  icon: ReactNode;
 }) {
   return (
-    <div className="rounded-[24px] border border-[color:var(--line)] bg-black/[0.03] p-5">
-      <div className="flex h-10 w-10 items-center justify-center rounded-2xl border border-[color:var(--line)] bg-white/80 text-[color:var(--ink)]">
+    <div className="flex items-center gap-4 rounded-[24px] border border-[color:var(--line)] bg-black/[0.03] p-4">
+      <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-[color:var(--line)] bg-white/80 text-[color:var(--ink)]">
         {icon}
       </div>
-      <div className="mt-4 font-[var(--font-display)] text-3xl font-bold tracking-tight">
-        {value}
+      <div>
+        <div className="font-[var(--font-display)] text-3xl font-bold tracking-tight text-[color:var(--ink)]">
+          {value}
+        </div>
+        <div className="text-sm text-[color:var(--muted)]">{label}</div>
       </div>
-      <div className="mt-1 text-sm text-[color:var(--muted)]">{label}</div>
     </div>
   );
 }
@@ -430,8 +540,16 @@ function FilterPill({
           : "bg-white/70 text-[color:var(--muted)] hover:text-[color:var(--ink)]",
       )}
       onClick={onClick}
+      type="button"
     >
       {label}
     </button>
   );
+}
+
+function formatDate(value: string) {
+  return new Date(value).toLocaleDateString("en-US", {
+    month: "short",
+    day: "numeric",
+  });
 }
