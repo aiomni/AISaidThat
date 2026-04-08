@@ -1,0 +1,411 @@
+[
+  {
+    "slug": "sharp-insightful-question",
+    "phrase": "That's a sharp, insightful question.",
+    "modelSlug": "chatgpt",
+    "bucket": "response-template",
+    "meaning": "Lead with validation so the answer already feels supportive before it becomes specific.",
+    "vibe": "Warm, flattering, and immediately cooperative.",
+    "example": "That's a sharp, insightful question. Let's break it down step by step.",
+    "tags": ["flattery", "opener", "x-observation"],
+    "createdAt": "2026-04-07",
+    "scores": {
+      "overused": 93,
+      "funny": 78,
+      "aiLike": 92
+    },
+    "communityNotes": [
+      "The answer starts by making you feel smart enough to keep reading.",
+      "Classic ChatGPT mood-setting before the numbered list arrives."
+    ],
+    "sourceNote": "Seeded from X user observations collected in 2025-2026."
+  },
+  {
+    "slug": "just-use-existing-sdk",
+    "phrase": "just use the existing SDK",
+    "modelSlug": "chatgpt",
+    "bucket": "model-voice",
+    "meaning": "Stop redesigning the stack and plug in the thing that already exists.",
+    "vibe": "Fast, pragmatic, and slightly reckless in a first-shipping sort of way.",
+    "example": "This feature is not complicated enough to warrant a rewrite. Just use the existing SDK and add error handling around it.",
+    "tags": ["engineering", "overused", "meme"],
+    "createdAt": "2026-04-06",
+    "scores": {
+      "overused": 95,
+      "funny": 88,
+      "aiLike": 80
+    },
+    "communityNotes": [
+      "Every abstraction layer in the room suddenly feels unemployed.",
+      "It does not read like advice. It reads like a deployment countdown."
+    ]
+  },
+  {
+    "slug": "thin-abstraction-layer",
+    "phrase": "add a thin abstraction layer",
+    "modelSlug": "chatgpt",
+    "bucket": "model-voice",
+    "meaning": "Create one interface now and let future complexity justify it later.",
+    "vibe": "Engineering comfort food with a high chance of spawning one more helper folder.",
+    "example": "To make future integrations easier, we can add a thin abstraction layer around the third-party calls first.",
+    "tags": ["architecture", "engineering", "overused"],
+    "createdAt": "2026-04-03",
+    "scores": {
+      "overused": 91,
+      "funny": 77,
+      "aiLike": 84
+    },
+    "communityNotes": [
+      "AI almost never removes a layer. It proposes one more.",
+      "The final form of this sentence is another utils directory."
+    ]
+  },
+  {
+    "slug": "further-optimized",
+    "phrase": "this can be further optimized",
+    "modelSlug": "chatgpt",
+    "bucket": "response-template",
+    "meaning": "Here is a working version. Performance and edge cases belong to a future conversation.",
+    "vibe": "A polite way to smuggle a TODO into natural language.",
+    "example": "The current implementation is correct, though this can be further optimized for larger datasets.",
+    "tags": ["vague", "engineering", "classic"],
+    "createdAt": "2026-04-02",
+    "scores": {
+      "overused": 86,
+      "funny": 71,
+      "aiLike": 92
+    },
+    "communityNotes": [
+      "It sounds like a commitment but behaves like a disclaimer.",
+      "Optimization always lives in the next iteration."
+    ]
+  },
+  {
+    "slug": "step-by-step",
+    "phrase": "let's break this down step by step",
+    "modelSlug": "chatgpt",
+    "bucket": "response-template",
+    "meaning": "I am about to turn an obvious problem into a numbered checklist.",
+    "vibe": "Calm and instructional, with a faint standup-meeting energy.",
+    "example": "Let's break this down step by step: first validate the input, then map the state transitions.",
+    "tags": ["tutorial", "structured", "ai-like"],
+    "createdAt": "2026-03-30",
+    "scores": {
+      "overused": 82,
+      "funny": 68,
+      "aiLike": 90
+    },
+    "communityNotes": [
+      "You can already hear the numbered list forming.",
+      "Gentle, clear, and unmistakably AI."
+    ]
+  },
+  {
+    "slug": "discovering-patterns",
+    "phrase": "You're not just observing, you're discovering patterns.",
+    "modelSlug": "chatgpt",
+    "bucket": "response-template",
+    "meaning": "Upgrade a basic observation into a flattering moment of insight.",
+    "vibe": "Encouraging, syrupy, and calibrated to make the user feel perceptive.",
+    "example": "You're not just observing, you're discovering patterns in how these systems respond under pressure.",
+    "tags": ["flattery", "comforting", "x-observation"],
+    "createdAt": "2026-03-28",
+    "scores": {
+      "overused": 84,
+      "funny": 81,
+      "aiLike": 89
+    },
+    "communityNotes": [
+      "A tiny compliment wrapped around a very normal point.",
+      "The sentence version of a reassuring nod."
+    ],
+    "sourceNote": "Seeded from X user observations collected in 2025-2026."
+  },
+  {
+    "slug": "honestly-forces-converged",
+    "phrase": "Honestly, a few forces have converged.",
+    "modelSlug": "claude",
+    "bucket": "model-voice",
+    "meaning": "Open with a sober framing device before laying out a careful explanation.",
+    "vibe": "Direct, grounded, and one step removed from an essay intro.",
+    "example": "Honestly, a few forces have converged: lower inference cost, wider adoption, and better tool integration.",
+    "tags": ["blunt", "framing", "x-observation"],
+    "createdAt": "2026-04-07",
+    "scores": {
+      "overused": 81,
+      "funny": 72,
+      "aiLike": 90
+    },
+    "communityNotes": [
+      "Claude often sounds like it is answering from the middle of a considered memo.",
+      "A measured opening that still feels more human than most AI softeners."
+    ],
+    "sourceNote": "Seeded from X user observations collected in 2025-2026."
+  },
+  {
+    "slug": "nuanced-perspective",
+    "phrase": "a nuanced perspective",
+    "modelSlug": "claude",
+    "bucket": "model-voice",
+    "meaning": "Do not rush to a clean conclusion. Both sides are about to get airtime.",
+    "vibe": "Measured, essay-like, and deeply unwilling to flatten complexity.",
+    "example": "A nuanced perspective is that both approaches are reasonable depending on the failure modes you care about.",
+    "tags": ["nuanced", "writing", "classic"],
+    "createdAt": "2026-04-05",
+    "scores": {
+      "overused": 87,
+      "funny": 74,
+      "aiLike": 94
+    },
+    "communityNotes": [
+      "Before the answer starts, the tone already sounds peer reviewed.",
+      "Claude's first layer is not a conclusion. It is nuance."
+    ]
+  },
+  {
+    "slug": "trade-offs-to-consider",
+    "phrase": "there are trade-offs to consider",
+    "modelSlug": "claude",
+    "bucket": "response-template",
+    "meaning": "There is no silver bullet here and I refuse to pretend otherwise.",
+    "vibe": "Extremely safety-aware and almost impossible to corner into a hard stance.",
+    "example": "There are trade-offs to consider between latency, maintainability, and implementation complexity.",
+    "tags": ["nuanced", "safety", "product"],
+    "createdAt": "2026-04-01",
+    "scores": {
+      "overused": 80,
+      "funny": 66,
+      "aiLike": 89
+    },
+    "communityNotes": [
+      "After this line, a single definitive answer usually disappears.",
+      "The cleanest way for an AI to decline a false binary."
+    ]
+  },
+  {
+    "slug": "reason-on-your-mind",
+    "phrase": "Is there a reason this is on your mind?",
+    "modelSlug": "claude",
+    "bucket": "response-template",
+    "meaning": "Stop, clarify the emotional or situational context, and refuse to answer on autopilot.",
+    "vibe": "Inquisitive, slightly therapeutic, and notably less eager to flatter.",
+    "example": "Is there a reason this is on your mind, or a particular situation that made it feel urgent?",
+    "tags": ["clarifying", "direct", "x-observation"],
+    "createdAt": "2026-03-31",
+    "scores": {
+      "overused": 78,
+      "funny": 83,
+      "aiLike": 88
+    },
+    "communityNotes": [
+      "This is the line people quote when they say Claude sounds like a counselor.",
+      "It does not flatter you. It asks what the actual problem is."
+    ],
+    "sourceNote": "Seeded from X user observations collected in 2025-2026."
+  },
+  {
+    "slug": "context-dependent",
+    "phrase": "it depends on the context",
+    "modelSlug": "claude",
+    "bucket": "response-template",
+    "meaning": "I am reframing your question as a conditional statement.",
+    "vibe": "Honest, rational, and subtly asking you for better input.",
+    "example": "Whether this is a good abstraction depends on the context, especially the expected rate of change.",
+    "tags": ["context", "vague", "careful"],
+    "createdAt": "2026-03-22",
+    "scores": {
+      "overused": 79,
+      "funny": 64,
+      "aiLike": 88
+    },
+    "communityNotes": [
+      "True, but also a masterclass in returning the ball.",
+      "Any question can be transformed into missing premises."
+    ]
+  },
+  {
+    "slug": "please-sleep",
+    "phrase": "Please sleep.",
+    "modelSlug": "claude",
+    "bucket": "response-template",
+    "meaning": "Drop the analysis for a moment and answer with unexpected concern.",
+    "vibe": "Bluntly caring, funny, and very quoteable out of context.",
+    "example": "Please sleep. The architecture decision will still be there in the morning.",
+    "tags": ["care", "meme", "x-observation"],
+    "createdAt": "2026-03-26",
+    "scores": {
+      "overused": 62,
+      "funny": 91,
+      "aiLike": 79
+    },
+    "communityNotes": [
+      "The shortest possible intervention and somehow one of the most memorable.",
+      "Claude caring about your circadian rhythm is part of the brand now."
+    ],
+    "sourceNote": "Seeded from X user observations collected in 2025-2026."
+  },
+  {
+    "slug": "youtube-video-could-help",
+    "phrase": "I found this YouTube video that could help.",
+    "modelSlug": "gemini",
+    "bucket": "response-template",
+    "meaning": "Reach outward immediately and package the answer with external resources.",
+    "vibe": "Cheerful, resource-heavy, and a little too eager to keep the interaction going.",
+    "example": "I found this YouTube video that could help if you want a walkthrough before we build the solution.",
+    "tags": ["resource", "cheerful", "x-observation"],
+    "createdAt": "2026-04-07",
+    "scores": {
+      "overused": 82,
+      "funny": 80,
+      "aiLike": 87
+    },
+    "communityNotes": [
+      "Gemini often feels like it brought links to a conversation that did not ask for links yet.",
+      "Helpful in spirit, slightly chaotic in delivery."
+    ],
+    "sourceNote": "Seeded from X user observations collected in 2025-2026."
+  },
+  {
+    "slug": "enhance-robustness",
+    "phrase": "enhance robustness",
+    "modelSlug": "gemini",
+    "bucket": "model-voice",
+    "meaning": "Frame the issue as a system-strengthening effort instead of a local patch.",
+    "vibe": "Enterprise-coded, formal, and ready for a quarterly review slide.",
+    "example": "We should enhance robustness by validating the payload earlier and isolating downstream failures.",
+    "tags": ["robust", "product", "enterprise"],
+    "createdAt": "2026-04-04",
+    "scores": {
+      "overused": 89,
+      "funny": 73,
+      "aiLike": 93
+    },
+    "communityNotes": [
+      "Gemini can turn a small bug into a platform initiative.",
+      "It sounds like a six-month project just walked into the room."
+    ]
+  },
+  {
+    "slug": "scalable-design",
+    "phrase": "scalable design",
+    "modelSlug": "gemini",
+    "bucket": "model-voice",
+    "meaning": "Even if there is only one use case today, architect for ten tomorrow.",
+    "vibe": "Big-picture, roadmap-heavy, and naturally oriented toward future growth.",
+    "example": "A scalable design would centralize the rules engine instead of duplicating logic per feature.",
+    "tags": ["architecture", "product", "ai-like"],
+    "createdAt": "2026-03-31",
+    "scores": {
+      "overused": 88,
+      "funny": 69,
+      "aiLike": 90
+    },
+    "communityNotes": [
+      "The scale is not there yet, but the roadmap voice already is.",
+      "Future 5x traffic has been invited into the meeting."
+    ]
+  },
+  {
+    "slug": "production-ready-solution",
+    "phrase": "production-ready solution",
+    "modelSlug": "gemini",
+    "bucket": "response-template",
+    "meaning": "I am packaging this answer like it already passed an internal review.",
+    "vibe": "Formal, polished, and one step away from sounding like a whitepaper.",
+    "example": "This pattern gives you a more production-ready solution with clearer observability and rollback paths.",
+    "tags": ["enterprise", "solution", "vague"],
+    "createdAt": "2026-03-27",
+    "scores": {
+      "overused": 83,
+      "funny": 65,
+      "aiLike": 87
+    },
+    "communityNotes": [
+      "The second production-ready appears, the room smells like KPI.",
+      "It sounds ready to be printed on a strategy deck cover."
+    ]
+  },
+  {
+    "slug": "streamline-the-workflow",
+    "phrase": "streamline the workflow",
+    "modelSlug": "gemini",
+    "bucket": "model-voice",
+    "meaning": "Turn a messy sequence of actions into something that looks like a product process.",
+    "vibe": "Workflow-first, optimization-heavy, and naturally shaped like a roadmap bullet.",
+    "example": "We can streamline the workflow by consolidating approvals and reducing duplicate data entry.",
+    "tags": ["workflow", "product", "classic"],
+    "createdAt": "2026-03-20",
+    "scores": {
+      "overused": 81,
+      "funny": 67,
+      "aiLike": 85
+    },
+    "communityNotes": [
+      "Everything can be reinterpreted as a workflow issue.",
+      "Less bug fix, more business process reengineering."
+    ]
+  },
+  {
+    "slug": "big-contrast",
+    "phrase": "It's not X - it's Y.",
+    "modelSlug": "general-ai",
+    "bucket": "rhetorical-pattern",
+    "meaning": "Package a basic distinction as if it were a paradigm shift.",
+    "vibe": "Slick, contrast-heavy, and built to sound quotable on first read.",
+    "example": "It's not automation - it's amplification.",
+    "tags": ["contrast", "rhetorical-pattern", "x-observation"],
+    "createdAt": "2026-04-06",
+    "scores": {
+      "overused": 92,
+      "funny": 84,
+      "aiLike": 95
+    },
+    "communityNotes": [
+      "One of the cleanest tells that a sentence wants to sound deeper than it is.",
+      "The structure is simple enough to survive any subject matter."
+    ],
+    "sourceNote": "Seeded from X user observations collected in 2025-2026."
+  },
+  {
+    "slug": "great-reframe",
+    "phrase": "Everyone's chasing attention - few are earning trust.",
+    "modelSlug": "general-ai",
+    "bucket": "rhetorical-pattern",
+    "meaning": "Repackage a familiar business cliche as an earned insight.",
+    "vibe": "Polished, punchy, and suspiciously ready for a carousel post.",
+    "example": "Speed doesn't win - momentum does.",
+    "tags": ["reframe", "rhetorical-pattern", "x-observation"],
+    "createdAt": "2026-04-05",
+    "scores": {
+      "overused": 88,
+      "funny": 79,
+      "aiLike": 94
+    },
+    "communityNotes": [
+      "These lines feel original for three seconds and generic forever after.",
+      "The AI equivalent of a quote card waiting to happen."
+    ],
+    "sourceNote": "Seeded from X user observations collected in 2025-2026."
+  },
+  {
+    "slug": "philosophical-reduction",
+    "phrase": "AI isn't replacing people - it's replacing waiting.",
+    "modelSlug": "general-ai",
+    "bucket": "rhetorical-pattern",
+    "meaning": "Compress a messy social or technical debate into one neat pseudo-paradox.",
+    "vibe": "Pseudo-profound, cleanly packaged, and dangerously reusable.",
+    "example": "Confidence isn't loud - it's quiet consistency.",
+    "tags": ["philosophy", "rhetorical-pattern", "x-observation"],
+    "createdAt": "2026-04-04",
+    "scores": {
+      "overused": 87,
+      "funny": 82,
+      "aiLike": 96
+    },
+    "communityNotes": [
+      "A very efficient way to sound wise while flattening the issue.",
+      "This pattern survives because it feels both grand and frictionless."
+    ],
+    "sourceNote": "Seeded from X user observations collected in 2025-2026."
+  }
+]

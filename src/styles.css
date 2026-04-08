@@ -1,0 +1,113 @@
+@import "@fontsource/space-grotesk/500.css";
+@import "@fontsource/space-grotesk/700.css";
+@import "@fontsource/ibm-plex-sans/400.css";
+@import "@fontsource/ibm-plex-sans/500.css";
+@import "@fontsource/ibm-plex-sans/600.css";
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "tailwindcss";
+
+:root {
+  --background: #f4ecdf;
+  --surface: #fff8ee;
+  --surface-strong: rgba(255, 248, 238, 0.9);
+  --ink: #1f1a14;
+  --muted: #6d6256;
+  --line: rgba(31, 26, 20, 0.12);
+  --accent: #ff6b3d;
+  --accent-soft: #ffd5bf;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-body: "IBM Plex Sans", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background:
+    radial-gradient(circle at top left, rgba(255, 107, 61, 0.18), transparent 32%),
+    radial-gradient(circle at top right, rgba(80, 229, 167, 0.14), transparent 30%),
+    radial-gradient(circle at center right, rgba(43, 191, 255, 0.14), transparent 28%),
+    linear-gradient(180deg, #f6efe3 0%, #efe4d2 100%);
+  color: var(--ink);
+  font-family: var(--font-body);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgba(31, 26, 20, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(31, 26, 20, 0.035) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(circle at center, black 35%, transparent 88%);
+}
+
+a {
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+::selection {
+  background: rgba(255, 107, 61, 0.24);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.noise-border {
+  position: relative;
+}
+
+.noise-border::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  padding: 1px;
+}
+
+.page-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.text-balance {
+  text-wrap: balance;
+}
+
+.tweet-shell .twitter-tweet {
+  margin: 0 auto !important;
+}
+
+iframe.twitter-tweet {
+  width: 100% !important;
+}
+
+@media (max-width: 768px) {
+  body::before {
+    background-size: 22px 22px;
+  }
+}

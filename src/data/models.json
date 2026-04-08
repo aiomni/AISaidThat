@@ -1,0 +1,62 @@
+[
+  {
+    "slug": "chatgpt",
+    "name": "ChatGPT",
+    "series": "GPT-4.5 energy",
+    "vendor": "OpenAI",
+    "tagline": "The flattering sidekick that validates first and formats second.",
+    "voice": "Sounds upbeat, affirming, and ready to answer in bullet points before you have finished doubting yourself.",
+    "biases": ["flattering", "structured", "ship-it"],
+    "signaturePhrases": [
+      "That's a sharp, insightful question.",
+      "let's break this down step by step",
+      "this can be further optimized"
+    ],
+    "accent": "sunset"
+  },
+  {
+    "slug": "claude",
+    "name": "Claude",
+    "series": "Opus 4.6 energy",
+    "vendor": "Anthropic",
+    "tagline": "The rational advisor that would rather clarify than flatter.",
+    "voice": "Sounds like a direct but careful counselor: more likely to question the premise, name the trade-offs, and ask why this matters.",
+    "biases": ["blunt", "nuanced", "clarifying"],
+    "signaturePhrases": [
+      "Honestly, a few forces have converged.",
+      "is there a reason this is on your mind?",
+      "there are trade-offs to consider"
+    ],
+    "accent": "mint"
+  },
+  {
+    "slug": "gemini",
+    "name": "Gemini",
+    "series": "3.1 energy",
+    "vendor": "Google",
+    "tagline": "The cheerful explainer that keeps turning answers into resource bundles.",
+    "voice": "Sounds energetic, expansive, and a little socially overcommitted, often reaching for links, videos, and broad workflow advice.",
+    "biases": ["cheerful", "resource-heavy", "product"],
+    "signaturePhrases": [
+      "I found this YouTube video that could help.",
+      "enhance robustness",
+      "streamline the workflow"
+    ],
+    "accent": "signal"
+  },
+  {
+    "slug": "general-ai",
+    "name": "General AI",
+    "series": "Cross-model patterns",
+    "vendor": "Cross-model",
+    "tagline": "The shared rhetorical voice that leaks across models.",
+    "voice": "Less a persona than a bag of reusable moves: sharp contrasts, pseudo-deep reframes, and polished one-liners that sound wiser than they are.",
+    "biases": ["cross-model", "rhetorical", "synthetic"],
+    "signaturePhrases": [
+      "it's not X - it's Y",
+      "everyone's chasing X - few are earning Y",
+      "AI isn't replacing people - it's replacing waiting"
+    ],
+    "accent": "signal"
+  }
+]
